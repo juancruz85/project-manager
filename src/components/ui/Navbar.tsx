@@ -1,64 +1,137 @@
+"use client";
+
+import { useState } from "react";
+
 export default function Navbar() {
+  const [open, setOpen] = useState(false);
+
   return (
-    <nav
-      className="
-        h-14
-  
-        bg-gradient-to-b
-        from-[#444]
-        to-[#1d1d1d]
-  
-        border-b
-        border-black
-  
-        shadow-xl
+    <nav className="ios-topbar h-14">
+      <div
+        className="
+        mx-auto
+        flex
+        h-full
+        max-w-7xl
+        items-center
+        justify-between
+        px-6
         "
-    >
-      <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-8">
+      >
         <h1
           className="
-            text-2xl
-            font-helvetica-neue
-            font-semibold
-            tracking-wide
-            text-white
+          text-lg
+          font-semibold
+          text-white
+          drop-shadow-[0_1px_1px_rgba(0,0,0,.8)]
+          sm:text-xl
           "
         >
           A Project Manager
         </h1>
 
-        <button
-          className="
-    h-8
-    px-5
+        <div className="relative">
+          <button
+            onClick={() => setOpen(!open)}
+            aria-label="Open create menu"
+            className="
+            ios-button-blue
+            flex
+            h-9
+            w-9
+            items-center
+            justify-center
+            rounded-[8px]
+            text-2xl
+            font-bold
+            text-white
+            active:translate-y-[2px]
+            "
+          >
+            +
+          </button>
 
-    rounded-xl
+          {open && (
+            <div
+              className="
+              absolute
+              right-0
+              top-12
+              z-10
+              w-48
+              overflow-hidden
+              rounded-[8px]
+              border
+              border-[#252c34]
+              bg-[#4c5560]
+              shadow-[inset_0_1px_0_rgba(255,255,255,.18),0_8px_20px_rgba(0,0,0,.32)]
+              "
+            >
+              <button
+                className="
+                w-full
+                px-4
+                py-3
 
-    border
-    border-[#1a1a1a]
+                text-left
+                text-sm
+                font-semibold
+                text-white
+                drop-shadow-[0_1px_0_rgba(0,0,0,.65)]
 
-    bg-gradient-to-b
-    from-[#565656]
-    to-[#303030]
+                transition-colors
+                hover:bg-white/18
 
-    text-sm
-    font-semibold
-    text-zinc-100
+                border-b
+                border-white/10
+                "
+              >
+                New Task
+              </button>
 
-    shadow-[0_4px_10px_rgba(0,0,0,.35),inset_0_1px_0_rgba(255,255,255,.18),inset_0_-1px_0_rgba(0,0,0,.45)]
+              <button
+                className="
+                w-full
+                px-4
+                py-3
 
-    transition-all
-    duration-150
+                text-left
+                text-sm
+                font-semibold
+                text-white
+                drop-shadow-[0_1px_0_rgba(0,0,0,.65)]
 
-    hover:-translate-y-[1px]
-    hover:brightness-105
+                transition-colors
+                hover:bg-white/18
 
-    active:translate-y-[2px]
-    active:shadow-[inset_0_3px_8px_rgba(0,0,0,.55)]
-  "
-        >
-          Login
-        </button>
+                border-b
+                border-white/10
+                "
+              >
+                New Project
+              </button>
+
+              <button
+                className="
+                w-full
+                px-4
+                py-3
+
+                text-left
+                text-sm
+                font-semibold
+                text-white
+                drop-shadow-[0_1px_0_rgba(0,0,0,.65)]
+
+                transition-colors
+                hover:bg-white/18
+                "
+              >
+                New Assignment
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </nav>
   );

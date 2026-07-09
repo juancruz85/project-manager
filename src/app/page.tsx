@@ -1,37 +1,25 @@
-import Image from "next/image";
-
 import Navbar from "@/components/ui/Navbar";
-import DashboardStat from "@/components/ui/DashboardStat";
-import Card from "@/components/ui/Card";
+import DashboardStats from "@/components/ui/DashboardStat";
+import UpcomingTasks from "@/components/dashboard/UpcomingTasks";
+import CalendarWidget from "@/components/dashboard/CalendarWidget";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#ece8df]">
+    <main className="ios-page min-h-screen">
       <Navbar />
 
-      <div className="mx-auto max-w-7xl p-8">
-        <h1 className="mb-8 text-4xl font-semibold text-zinc-700">Dashboard</h1>
-
-        <div className="grid gap-6 lg:grid-cols-4">
-          <DashboardStat title="Tasks" value="12" subtitle="2 Due Today" />
-
-          <DashboardStat title="Projects" value="4" subtitle="Active" />
-
-          <DashboardStat title="Assignments" value="7" subtitle="School" />
-
-          <DashboardStat title="Completed" value="85%" subtitle="This Week" />
+      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+        <div className="mb-6 rounded-[8px] border border-[#b8c0ca] bg-gradient-to-b from-white to-[#e3e8ee] px-4 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,.9),0_2px_5px_rgba(25,32,40,.1)] sm:px-5">
+          <h1 className="ios-panel-title text-3xl font-bold sm:text-4xl">
+            Dashboard
+          </h1>
         </div>
 
-        <div className="mt-8 grid gap-8 lg:grid-cols-3">
-          <Card className="lg:col-span-2">
-            <h2 className="mb-5 text-2xl">Upcoming Tasks</h2>
+        <DashboardStats />
 
-            {/* Tasks go here */}
-          </Card>
-
-          <Card>
-            <h2 className="mb-5 text-2xl">Calendar</h2>
-          </Card>
+        <div className="mt-6 grid gap-4 lg:grid-cols-3">
+          <UpcomingTasks />
+          <CalendarWidget />
         </div>
       </div>
     </main>
