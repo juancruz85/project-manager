@@ -42,7 +42,7 @@ export function DashboardStat({ title, value, subtitle }: DashboardStatData) {
   );
 }
 
-export default function DashboardStats({
+export function DashboardStats({
   stats = defaultDashboardStats,
 }: DashboardStatsProps) {
   return (
