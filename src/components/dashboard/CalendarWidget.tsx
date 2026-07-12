@@ -1,44 +1,22 @@
+import Link from "next/link";
+
 import Card from "@/components/ui/Card";
 
 export interface CalendarEvent {
-  id: number;
+  id: string;
   title: string;
   day: number;
   color: "blue" | "red" | "green";
 }
 
 interface CalendarWidgetProps {
-  monthLabel?: string;
-  today?: number;
-  days?: number[];
-  events?: CalendarEvent[];
+  monthLabel: string;
+  today: number | null;
+  days: number[];
+  events: CalendarEvent[];
+  prevMonthParam: string;
+  nextMonthParam: string;
 }
-
-const defaultEvents: CalendarEvent[] = [
-  {
-    id: 1,
-    title: "Essay",
-    day: 9,
-    color: "red",
-  },
-  {
-    id: 2,
-    title: "Robotics",
-    day: 12,
-    color: "blue",
-  },
-  {
-    id: 3,
-    title: "Study",
-    day: 18,
-    color: "green",
-  },
-];
-
-const defaultCalendarDays = [
-  29, 30, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-  21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 1, 2,
-];
 
 function DayCell({
   day,
@@ -46,11 +24,11 @@ function DayCell({
   events,
 }: {
   day: number;
-  today: number;
+  today: number | null;
   events: CalendarEvent[];
 }) {
   const dayEvents = events.filter((event) => event.day === day);
-  const isToday = day === today;
+  const isToday = today !== null && day === today;
 
   return (
     <div
@@ -119,10 +97,12 @@ function DayCell({
 }
 
 export default function CalendarWidget({
-  monthLabel = "July 2026",
-  today = 9,
-  days = defaultCalendarDays,
-  events = defaultEvents,
+  monthLabel,
+  today,
+  days,
+  events,
+  prevMonthParam,
+  nextMonthParam,
 }: CalendarWidgetProps) {
   return (
     <Card>
@@ -134,12 +114,13 @@ export default function CalendarWidget({
         items-center
       "
       >
-        <button
+        <Link
+          href={`/dashboard?month=${prevMonthParam}`}
           aria-label="Previous month"
-          className="ios-button-gray h-8 w-8 rounded-[8px] text-sm font-bold active:translate-y-px"
+          className="ios-button-gray flex h-8 w-8 items-center justify-center rounded-[8px] text-sm font-bold active:translate-y-px"
         >
           &lt;
-        </button>
+        </Link>
 
         <h2
           className="
@@ -151,12 +132,13 @@ export default function CalendarWidget({
           {monthLabel}
         </h2>
 
-        <button
+        <Link
+          href={`/dashboard?month=${nextMonthParam}`}
           aria-label="Next month"
-          className="ios-button-gray h-8 w-8 rounded-[8px] text-sm font-bold active:translate-y-px"
+          className="ios-button-gray flex h-8 w-8 items-center justify-center rounded-[8px] text-sm font-bold active:translate-y-px"
         >
           &gt;
-        </button>
+        </Link>
       </div>
 
       <div

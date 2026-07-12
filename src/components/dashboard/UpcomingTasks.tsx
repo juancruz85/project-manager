@@ -1,9 +1,10 @@
-import Card from "@/components/ui/Card";
+import Link from "next/link";
 
-type TaskPriority = "Low" | "Medium" | "High";
+import Card from "@/components/ui/Card";
+import PriorityBadge, { TaskPriority } from "@/components/ui/PriorityBadge";
 
 export interface Task {
-  id: number;
+  id: string;
   title: string;
   project: string;
   dueDate: string;
@@ -13,60 +14,6 @@ export interface Task {
 
 interface UpcomingTasksProps {
   tasks?: Task[];
-}
-
-const defaultTasks: Task[] = [
-  {
-    id: 1,
-    title: "Finish History Essay",
-    project: "School",
-    dueDate: "Tomorrow",
-    priority: "High",
-    completed: false,
-  },
-  {
-    id: 2,
-    title: "Study for Chemistry Quiz",
-    project: "School",
-    dueDate: "Friday",
-    priority: "Medium",
-    completed: false,
-  },
-  {
-    id: 3,
-    title: "Update Portfolio Website",
-    project: "Personal",
-    dueDate: "Sunday",
-    priority: "Low",
-    completed: false,
-  },
-];
-
-function PriorityBadge({ priority }: { priority: TaskPriority }) {
-  const styles = {
-    High:
-      "bg-gradient-to-b from-[#dc6b61] to-[#b9473e] text-white border-[#9f3b34]",
-    Medium:
-      "bg-gradient-to-b from-[#7ba9d8] to-[#4d7fb6] text-white border-[#416f9d]",
-    Low: "bg-gradient-to-b from-[#8bbf88] to-[#5f9860] text-white border-[#518453]",
-  };
-
-  return (
-    <span
-      className={`
-        rounded-[8px]
-        border
-        px-3
-        py-1
-        text-xs
-        font-semibold
-        shadow-[inset_0_1px_0_rgba(255,255,255,.28)]
-        ${styles[priority]}
-      `}
-    >
-      {priority}
-    </span>
-  );
 }
 
 function TaskRow({ task }: { task: Task }) {
@@ -98,9 +45,7 @@ function TaskRow({ task }: { task: Task }) {
   );
 }
 
-export default function UpcomingTasks({
-  tasks = defaultTasks,
-}: UpcomingTasksProps) {
+export default function UpcomingTasks({ tasks = [] }: UpcomingTasksProps) {
   return (
     <Card className="lg:col-span-2">
       <div className="mb-5 flex items-center justify-between">
@@ -108,7 +53,8 @@ export default function UpcomingTasks({
           Upcoming Tasks
         </h2>
 
-        <button
+        <Link
+          href="/dashboard/tasks"
           className="
             ios-button-gray
             rounded-[8px]
@@ -120,10 +66,15 @@ export default function UpcomingTasks({
           "
         >
           View All
-        </button>
+        </Link>
       </div>
 
       <div className="space-y-4">
+        {tasks.length === 0 && (
+          <p className="text-sm font-semibold text-[#6d7884]">
+            No upcoming tasks. Use the + menu to create one.
+          </p>
+        )}
         {tasks.map((task) => (
           <TaskRow key={task.id} task={task} />
         ))}

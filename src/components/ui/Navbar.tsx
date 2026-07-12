@@ -2,8 +2,23 @@
 
 import { useState } from "react";
 
-export default function Navbar() {
+import { NewProjectModal, NewTaskModal } from "@/components/ui/CreateModals";
+import { logoutAction } from "@/lib/actions/auth-actions";
+
+interface ProjectOption {
+  id: string;
+  name: string;
+}
+
+interface NavbarProps {
+  projects: ProjectOption[];
+}
+
+type ModalType = "task" | "project" | "assignment" | null;
+
+export default function Navbar({ projects }: NavbarProps) {
   const [open, setOpen] = useState(false);
+  const [modal, setModal] = useState<ModalType>(null);
 
   return (
     <nav className="ios-topbar h-14">
@@ -30,109 +45,148 @@ export default function Navbar() {
           A Project Manager
         </h1>
 
-        <div className="relative">
-          <button
-            onClick={() => setOpen(!open)}
-            aria-label="Open create menu"
-            className="
-            ios-button-blue
-            flex
-            h-9
-            w-9
-            items-center
-            justify-center
-            rounded-[8px]
-            text-2xl
-            font-bold
-            text-white
-            active:translate-y-[2px]
-            "
-          >
-            +
-          </button>
-
-          {open && (
-            <div
+        <div className="flex items-center gap-2">
+          <form action={logoutAction}>
+            <button
+              type="submit"
               className="
-              absolute
-              right-0
-              top-12
-              z-10
-              w-48
-              overflow-hidden
+              ios-button-gray
+              flex
+              h-9
+              items-center
+              justify-center
               rounded-[8px]
-              border
-              border-[#252c34]
-              bg-[#4c5560]
-              shadow-[inset_0_1px_0_rgba(255,255,255,.18),0_8px_20px_rgba(0,0,0,.32)]
+              px-3
+              text-sm
+              font-semibold
+              active:translate-y-[2px]
               "
             >
-              <button
+              Logout
+            </button>
+          </form>
+
+          <div className="relative">
+            <button
+              onClick={() => setOpen(!open)}
+              aria-label="Open create menu"
+              className="
+              ios-button-blue
+              flex
+              h-9
+              w-9
+              items-center
+              justify-center
+              rounded-[8px]
+              text-2xl
+              font-bold
+              text-white
+              active:translate-y-[2px]
+              "
+            >
+              +
+            </button>
+
+            {open && (
+              <div
                 className="
-                w-full
-                px-4
-                py-3
-
-                text-left
-                text-sm
-                font-semibold
-                text-white
-                drop-shadow-[0_1px_0_rgba(0,0,0,.65)]
-
-                transition-colors
-                hover:bg-white/18
-
-                border-b
-                border-white/10
+                absolute
+                right-0
+                top-12
+                z-10
+                w-48
+                overflow-hidden
+                rounded-[8px]
+                border
+                border-[#252c34]
+                bg-[#4c5560]
+                shadow-[inset_0_1px_0_rgba(255,255,255,.18),0_8px_20px_rgba(0,0,0,.32)]
                 "
               >
-                New Task
-              </button>
+                <button
+                  onClick={() => {
+                    setModal("task");
+                    setOpen(false);
+                  }}
+                  className="
+                  w-full
+                  px-4
+                  py-3
 
-              <button
-                className="
-                w-full
-                px-4
-                py-3
+                  text-left
+                  text-sm
+                  font-semibold
+                  text-white
+                  drop-shadow-[0_1px_0_rgba(0,0,0,.65)]
 
-                text-left
-                text-sm
-                font-semibold
-                text-white
-                drop-shadow-[0_1px_0_rgba(0,0,0,.65)]
+                  transition-colors
+                  hover:bg-white/18
 
-                transition-colors
-                hover:bg-white/18
+                  border-b
+                  border-white/10
+                  "
+                >
+                  New Task
+                </button>
 
-                border-b
-                border-white/10
-                "
-              >
-                New Project
-              </button>
+                <button
+                  onClick={() => {
+                    setModal("project");
+                    setOpen(false);
+                  }}
+                  className="
+                  w-full
+                  px-4
+                  py-3
 
-              <button
-                className="
-                w-full
-                px-4
-                py-3
+                  text-left
+                  text-sm
+                  font-semibold
+                  text-white
+                  drop-shadow-[0_1px_0_rgba(0,0,0,.65)]
 
-                text-left
-                text-sm
-                font-semibold
-                text-white
-                drop-shadow-[0_1px_0_rgba(0,0,0,.65)]
+                  transition-colors
+                  hover:bg-white/18
 
-                transition-colors
-                hover:bg-white/18
-                "
-              >
-                New Assignment
-              </button>
-            </div>
-          )}
+                  border-b
+                  border-white/10
+                  "
+                >
+                  New Project
+                </button>
+
+                <button
+                  onClick={() => {
+                    setModal("assignment");
+                    setOpen(false);
+                  }}
+                  className="
+                  w-full
+                  px-4
+                  py-3
+
+                  text-left
+                  text-sm
+                  font-semibold
+                  text-white
+                  drop-shadow-[0_1px_0_rgba(0,0,0,.65)]
+
+                  transition-colors
+                  hover:bg-white/18
+                  "
+                >
+                  New Assignment
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
+
+      {modal === "project" && <NewProjectModal onClose={() => setModal(null)} />}
+      {(modal === "task" || modal === "assignment") && (
+        <NewTaskModal kind={modal} projects={projects} onClose={() => setModal(null)} />
+      )}
     </nav>
   );
 }

@@ -1,8 +1,14 @@
+"use client";
+
 import Link from "next/link";
+import { useActionState } from "react";
 
 import Card from "@/components/ui/Card";
+import { registerAction } from "@/lib/actions/auth-actions";
 
 export default function RegisterPage() {
+  const [state, formAction, pending] = useActionState(registerAction, undefined);
+
   return (
     <main className="ios-page flex min-h-screen flex-col">
       <header className="ios-topbar h-14">
@@ -22,7 +28,7 @@ export default function RegisterPage() {
             </p>
           </div>
 
-          <form className="space-y-4">
+          <form action={formAction} className="space-y-4">
             <label className="block">
               <span className="mb-1 block text-sm font-bold text-[#44505d]">
                 Name
@@ -31,6 +37,7 @@ export default function RegisterPage() {
                 type="text"
                 name="name"
                 autoComplete="name"
+                required
                 className="w-full rounded-[8px] border border-[#aeb8c4] bg-gradient-to-b from-[#eef2f6] to-white px-3 py-2 text-[#1f252c] shadow-[inset_0_1px_3px_rgba(25,32,40,.16),0_1px_0_rgba(255,255,255,.9)] outline-none transition-colors placeholder:text-[#8d98a5] focus:border-[#4f91ca]"
                 placeholder="Your name"
               />
@@ -44,6 +51,7 @@ export default function RegisterPage() {
                 type="email"
                 name="email"
                 autoComplete="email"
+                required
                 className="w-full rounded-[8px] border border-[#aeb8c4] bg-gradient-to-b from-[#eef2f6] to-white px-3 py-2 text-[#1f252c] shadow-[inset_0_1px_3px_rgba(25,32,40,.16),0_1px_0_rgba(255,255,255,.9)] outline-none transition-colors placeholder:text-[#8d98a5] focus:border-[#4f91ca]"
                 placeholder="you@example.com"
               />
@@ -57,17 +65,26 @@ export default function RegisterPage() {
                 type="password"
                 name="password"
                 autoComplete="new-password"
+                required
+                minLength={8}
                 className="w-full rounded-[8px] border border-[#aeb8c4] bg-gradient-to-b from-[#eef2f6] to-white px-3 py-2 text-[#1f252c] shadow-[inset_0_1px_3px_rgba(25,32,40,.16),0_1px_0_rgba(255,255,255,.9)] outline-none transition-colors placeholder:text-[#8d98a5] focus:border-[#4f91ca]"
                 placeholder="Password"
               />
             </label>
 
-            <Link
-              href="/dashboard"
-              className="ios-button-blue flex h-10 w-full items-center justify-center rounded-[8px] text-sm font-bold text-white active:translate-y-px"
+            {state?.error && (
+              <p className="text-center text-sm font-bold text-[#b9473e]">
+                {state.error}
+              </p>
+            )}
+
+            <button
+              type="submit"
+              disabled={pending}
+              className="ios-button-blue flex h-10 w-full items-center justify-center rounded-[8px] text-sm font-bold text-white active:translate-y-px disabled:opacity-60"
             >
-              Create Account
-            </Link>
+              {pending ? "Creating account..." : "Create Account"}
+            </button>
 
             <Link
               href="/"
