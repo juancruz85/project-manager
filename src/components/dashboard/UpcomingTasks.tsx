@@ -53,16 +53,7 @@ function PriorityBadge({ priority }: { priority: TaskPriority }) {
 
   return (
     <span
-      className={`
-        rounded-[8px]
-        border
-        px-3
-        py-1
-        text-xs
-        font-semibold
-        shadow-[inset_0_1px_0_rgba(255,255,255,.28)]
-        ${styles[priority]}
-      `}
+      className={`rounded-[8px] border px-3 py-1 text-xs font-semibold shadow-[inset_0_1px_0_rgba(255,255,255,.28)] ${styles[priority]}`}
     >
       {priority}
     </span>
@@ -71,18 +62,7 @@ function PriorityBadge({ priority }: { priority: TaskPriority }) {
 
 function TaskRow({ task }: { task: Task }) {
   return (
-    <div
-      className="
-        ios-list-row
-        flex
-        items-center
-        justify-between
-        gap-3
-        rounded-[8px]
-        p-3
-        sm:p-4
-      "
-    >
+    <div className="ios-list-row flex items-center justify-between gap-3 rounded-[8px] p-3 sm:p-4">
       <div className="min-w-0">
         <h3 className="truncate font-bold text-[#26313d] drop-shadow-[0_1px_0_rgba(255,255,255,.9)]">
           {task.title}
@@ -108,17 +88,7 @@ export default function UpcomingTasks({
           Upcoming Tasks
         </h2>
 
-        <button
-          className="
-            ios-button-gray
-            rounded-[8px]
-            px-3
-            py-1.5
-            text-sm
-            font-semibold
-            active:translate-y-px
-          "
-        >
+        <button className="ios-button-gray rounded-[8px] px-3 py-1.5 text-sm font-semibold active:translate-y-px">
           View All
         </button>
       </div>
