@@ -98,7 +98,8 @@ export function NewTaskModal({
     }
   }, [state, onClose]);
 
-  const today = new Date().toISOString().slice(0, 10);
+  const now = new Date();
+  const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
   const title = kind === "assignment" ? "New Assignment" : "New Task";
 
   return (

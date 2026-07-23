@@ -4,7 +4,7 @@ import { ObjectId } from "mongodb";
 import { revalidatePath } from "next/cache";
 
 import { auth } from "@/auth";
-import { getTasksCollection } from "@/lib/db";
+import { getProjectsCollection, getTasksCollection } from "@/lib/db";
 import { TaskFormSchema } from "@/lib/definitions";
 
 export interface TaskFormState {
@@ -42,6 +42,17 @@ export async function createTaskAction(
     return { error: "Please enter a valid due date." };
   }
 
+  if (projectId) {
+    const projects = await getProjectsCollection();
+    const project = await projects.findOne({
+      _id: new ObjectId(projectId),
+      userId: new ObjectId(session.user.id),
+    });
+    if (!project) {
+      return { error: "Invalid project selected." };
+    }
+  }
+
   const tasks = await getTasksCollection();
   await tasks.insertOne({
     userId: new ObjectId(session.user.id),
@@ -55,6 +66,7 @@ export async function createTaskAction(
   });
 
   revalidatePath("/dashboard");
+  revalidatePath("/dashboard/tasks");
 
   return { success: true };
 }

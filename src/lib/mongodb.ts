@@ -26,13 +26,19 @@ function createClientPromise(): Promise<MongoClient> {
 export default function getMongoClientPromise(): Promise<MongoClient> {
   if (process.env.NODE_ENV === "development") {
     if (!global._mongoClientPromise) {
-      global._mongoClientPromise = createClientPromise();
+      global._mongoClientPromise = createClientPromise().catch((error) => {
+        global._mongoClientPromise = undefined;
+        throw error;
+      });
     }
     return global._mongoClientPromise;
   }
 
   if (!clientPromise) {
-    clientPromise = createClientPromise();
+    clientPromise = createClientPromise().catch((error) => {
+      clientPromise = undefined;
+      throw error;
+    });
   }
   return clientPromise;
 }

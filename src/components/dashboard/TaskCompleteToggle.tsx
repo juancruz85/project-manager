@@ -42,7 +42,6 @@ export default function TaskCompleteToggle({
       `}
     >
       &#10003;
-     /* check what &#10003 means */
     </button>
   );
 }

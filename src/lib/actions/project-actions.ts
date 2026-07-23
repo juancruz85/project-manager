@@ -37,6 +37,7 @@ export async function createProjectAction(
   });
 
   revalidatePath("/dashboard");
+  revalidatePath("/dashboard/tasks");
 
   return { success: true };
 }

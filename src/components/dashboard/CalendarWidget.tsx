@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import Card from "@/components/ui/Card";
+import { DayInfo } from "@/lib/date-utils";
 
 export interface CalendarEvent {
   id: string;
@@ -12,23 +13,23 @@ export interface CalendarEvent {
 interface CalendarWidgetProps {
   monthLabel: string;
   today: number | null;
-  days: number[];
+  days: DayInfo[];
   events: CalendarEvent[];
   prevMonthParam: string;
   nextMonthParam: string;
 }
 
 function DayCell({
-  day,
+  dayInfo,
   today,
   events,
 }: {
-  day: number;
+  dayInfo: DayInfo;
   today: number | null;
   events: CalendarEvent[];
 }) {
-  const dayEvents = events.filter((event) => event.day === day);
-  const isToday = today !== null && day === today;
+  const dayEvents = events.filter((event) => event.day === dayInfo.day && dayInfo.isCurrentMonth);
+  const isToday = today !== null && dayInfo.day === today && dayInfo.isCurrentMonth;
 
   return (
     <div className="ios-calendar-cell relative min-h-16 border p-1 sm:min-h-20">
@@ -36,10 +37,12 @@ function DayCell({
         className={`flex h-6 w-6 items-center justify-center rounded-full text-xs font-semibold ${
           isToday
             ? "ios-button-blue text-white"
-            : "text-[#5f6b78] drop-shadow-[0_1px_0_rgba(255,255,255,.9)]"
+            : dayInfo.isCurrentMonth
+              ? "text-[#5f6b78] drop-shadow-[0_1px_0_rgba(255,255,255,.9)]"
+              : "text-[#a0aab6] drop-shadow-[0_1px_0_rgba(255,255,255,.9)]"
         }`}
       >
-        {day}
+        {dayInfo.day}
       </div>
 
       <div className="mt-1 space-y-1">
@@ -73,7 +76,8 @@ export default function CalendarWidget({
   return (
     <Card>
       <div className="mb-5 flex justify-between items-center">
-        <button
+        <Link
+          href={`/dashboard?month=${prevMonthParam}`}
           aria-label="Previous month"
           className="ios-button-gray flex h-8 w-8 items-center justify-center rounded-[8px] text-sm font-bold active:translate-y-px"
         >
@@ -103,8 +107,8 @@ export default function CalendarWidget({
         {/* Month grid */}
 
         <div className="grid grid-cols-7">
-          {days.map((day, index) => (
-            <DayCell key={index} day={day} today={today} events={events} />
+          {days.map((dayInfo, index) => (
+            <DayCell key={index} dayInfo={dayInfo} today={today} events={events} />
           ))}
         </div>
       </div>

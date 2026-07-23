@@ -23,12 +23,17 @@ const WEEKDAY_NAMES = [
   "Saturday",
 ];
 
+export interface DayInfo {
+  day: number;
+  isCurrentMonth: boolean;
+}
+
 export interface MonthInfo {
   year: number;
   month: number; // 0-indexed
   label: string;
   today: number | null;
-  days: number[];
+  days: DayInfo[];
   firstDayOfMonth: Date;
   lastDayOfMonth: Date;
   prevMonthParam: string;
@@ -58,15 +63,16 @@ export function getMonthInfo(year: number, month: number, now: Date): MonthInfo 
   const daysInMonth = lastDayOfMonth.getDate();
   const daysInPrevMonth = new Date(year, month, 0).getDate();
 
-  const days: number[] = [];
+  const days: DayInfo[] = [];
   for (let i = startWeekday - 1; i >= 0; i--) {
-    days.push(daysInPrevMonth - i);
+    days.push({ day: daysInPrevMonth - i, isCurrentMonth: false });
   }
   for (let d = 1; d <= daysInMonth; d++) {
-    days.push(d);
+    days.push({ day: d, isCurrentMonth: true });
   }
+  let nextMonthDay = 1;
   while (days.length % 7 !== 0) {
-    days.push(days.length - startWeekday - daysInMonth + 1);
+    days.push({ day: nextMonthDay++, isCurrentMonth: false });
   }
 
   const isCurrentMonth = now.getFullYear() === year && now.getMonth() === month;

@@ -73,7 +73,7 @@ export default function RegisterPage() {
             </label>
 
             {state?.error && (
-              <p className="text-center text-sm font-bold text-[#b9473e]">
+              <p className="text-center text-sm font-bold text-[#b9473e]" role="alert">
                 {state.error}
               </p>
             )}

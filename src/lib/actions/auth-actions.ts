@@ -64,6 +64,8 @@ export async function registerAction(
   const normalizedEmail = email.toLowerCase();
 
   const users = await getUsersCollection();
+  await users.createIndex({ email: 1 }, { unique: true });
+
   const existing = await users.findOne({ email: normalizedEmail });
   if (existing) {
     return { error: "An account with that email already exists." };
@@ -71,12 +73,19 @@ export async function registerAction(
 
   const passwordHash = await bcrypt.hash(password, 10);
 
-  await users.insertOne({
-    name,
-    email: normalizedEmail,
-    passwordHash,
-    createdAt: new Date(),
-  });
+  try {
+    await users.insertOne({
+      name,
+      email: normalizedEmail,
+      passwordHash,
+      createdAt: new Date(),
+    });
+  } catch (error: unknown) {
+    if (error && typeof error === "object" && "code" in error && error.code === 11000) {
+      return { error: "An account with that email already exists." };
+    }
+    throw error;
+  }
 
   try {
     await signIn("credentials", {
