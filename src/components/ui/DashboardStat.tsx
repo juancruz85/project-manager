@@ -17,16 +17,7 @@ const defaultDashboardStats: DashboardStatData[] = [
 
 export function DashboardStat({ title, value, subtitle }: DashboardStatData) {
   return (
-    <div
-      className="
-        ios-card
-        relative
-        overflow-hidden
-        p-4
-        text-[#1f252c]
-        sm:p-5
-        "
-    >
+    <div className="ios-card relative overflow-hidden p-4 text-[#1f252c] sm:p-5">
       <div className="absolute inset-x-3 top-2 h-px bg-white/80" />
 
       <h3 className="ios-panel-title text-sm font-bold uppercase tracking-[0.08em]">
