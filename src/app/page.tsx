@@ -1,8 +1,12 @@
-import Link from "next/link";
+"use client";
 
+import Link from "next/link";
+import { useActionState } from "react";
+import { login } from "@/lib/actions/auth";
 import Card from "@/components/ui/Card";
 
 export default function LoginPage() {
+  const [state, action, pending] = useActionState(login, undefined);
   return (
     <main className="ios-page flex min-h-screen flex-col">
       <header className="ios-topbar h-14">
@@ -22,7 +26,7 @@ export default function LoginPage() {
             </p>
           </div>
 
-          <form className="space-y-4">
+          <form action={action} className="space-y-4">
             <label className="block">
               <span className="mb-1 block text-sm font-bold text-[#44505d]">
                 Email
@@ -49,12 +53,18 @@ export default function LoginPage() {
               />
             </label>
 
-            <Link
-              href="/dashboard"
+            {state?.message && (
+              <p className="text-sm font-semibold text-red-600">
+                {state.message}
+              </p>
+            )}
+            <button
+              type="submit"
+              disabled={pending}
               className="ios-button-blue flex h-10 w-full items-center justify-center rounded-[8px] text-sm font-bold text-white active:translate-y-px"
             >
-              Login
-            </Link>
+              {pending ? "Logging in…" : "Login"}
+            </button>
 
             <div className="flex items-center gap-3">
               <div className="h-px flex-1 bg-[#c5cdd6]" />

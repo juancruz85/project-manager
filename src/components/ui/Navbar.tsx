@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { logout } from "@/lib/actions/auth";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -37,6 +38,14 @@ export default function Navbar() {
             </div>
           )}
         </div>
+        <form action={logout}>
+          <button
+            type="submit"
+            className="ios-button-blue flex h-9 w-9 items-center justify-center rounded-[8px] text-2xl font-bold text-white active:translate-y-[2px]"
+          >
+            Log out
+          </button>
+        </form>
       </div>
     </nav>
   );

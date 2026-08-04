@@ -1,8 +1,12 @@
-import Link from "next/link";
+"use client";
 
+import Link from "next/link";
+import { useActionState } from "react";
+import { signup } from "@/lib/actions/auth";
 import Card from "@/components/ui/Card";
 
 export default function RegisterPage() {
+  const [state, action, pending] = useActionState(signup, undefined);
   return (
     <main className="ios-page flex min-h-screen flex-col">
       <header className="ios-topbar h-14">
@@ -21,8 +25,7 @@ export default function RegisterPage() {
               Create an account for projects, tasks, and assignments.
             </p>
           </div>
-
-          <form className="space-y-4">
+          <form action={action} className="space-y-4">
             <label className="block">
               <span className="mb-1 block text-sm font-bold text-[#44505d]">
                 Name
@@ -62,12 +65,18 @@ export default function RegisterPage() {
               />
             </label>
 
-            <Link
-              href="/dashboard"
+            {state?.message && (
+              <p className="text-sm font-semibold text-red-600">
+                {state.message}
+              </p>
+            )}
+            <button
+              type="submit"
+              disabled={pending}
               className="ios-button-blue flex h-10 w-full items-center justify-center rounded-[8px] text-sm font-bold text-white active:translate-y-px"
             >
-              Create Account
-            </Link>
+              {pending ? "Creating account…" : "Create Account"}
+            </button>
 
             <Link
               href="/"
