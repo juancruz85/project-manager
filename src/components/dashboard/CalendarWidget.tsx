@@ -111,15 +111,11 @@ export default function CalendarWidget({
       </div>
 
       <div className="overflow-hidden rounded-[8px] border border-[#b8c0ca] shadow-[inset_0_1px_4px_rgba(25,32,40,.1),0_1px_0_rgba(255,255,255,.86)]">
-        {/* Week headers */}
-
         <div className="grid grid-cols-7 bg-gradient-to-b from-[#f8fafc] to-[#dfe5ec] text-center text-xs font-bold text-[#5f6b78] drop-shadow-[0_1px_0_rgba(255,255,255,.9)] py-2">
           {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
             <div key={day}>{day}</div>
           ))}
         </div>
-
-        {/* Month grid */}
 
         <div className="grid grid-cols-7">
           {days.map((day, index) => (
