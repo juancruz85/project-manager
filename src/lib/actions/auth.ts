@@ -10,7 +10,7 @@ export async function signup(prevState: unknown, formData: FormData) {
 
   const supabase = await createClient();
 
-  const { error } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: { data: { name } },
@@ -18,6 +18,10 @@ export async function signup(prevState: unknown, formData: FormData) {
 
   if (error) {
     return { message: error.message };
+  }
+
+  if (!data.session) {
+    return { message: "Check your email to confirm your account before logging in." };
   }
 
   redirect("/dashboard");
@@ -38,8 +42,13 @@ export async function login(prevState: unknown, formData: FormData) {
   redirect("/dashboard");
 }
 
-export async function logout() {
+export async function logout(prevState: unknown) {
   const supabase = await createClient();
-  await supabase.auth.signOut();
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    return { message: error.message };
+  }
+
   redirect("/");
 }
